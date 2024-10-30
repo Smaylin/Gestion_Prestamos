@@ -1,0 +1,97 @@
+﻿@page "/prestamos"
+@using PruebaTecnica.Components.Models
+@inject HttpClient Http
+
+<h3>Gestion de Prestamos</h3>
+
+@* <div class="container">
+    <div class="row">
+        <div class="col-md-6">
+            <h5>Datos del Cliente</h5>
+            <label>Identificación:</label>
+            <input type="text" @bind="cliente.Identificacion" class="form-control" />
+            <button class="btn btn-primary" @onclick="BuscarCliente">Buscar</button>
+
+            @if (cliente != null)
+            {
+                <p>Nombre: @cliente.Nombres @cliente.Apellidos</p>
+                <p>Empleado: @cliente.EsEmpleado</p>
+                <p>Perfil Empleado: @cliente.PerfilEmpleado</p>
+                <h5>Préstamos Asociados</h5>
+                @foreach (var prestamo in prestamos)
+                {
+                    <p>@prestamo.TipoPrestamo: Monto: @prestamo.Monto, Tasa: @prestamo.Tasa</p>
+                }
+
+                <hr />
+                <h5>Nuevo Préstamo</h5>
+                <label>Tipo de Préstamo:</label>
+                <select @bind="nuevoPrestamo.TipoPrestamo" class="form-control">
+                    <option value="1">Préstamo Personal</option>
+                    <option value="2">Préstamo Vehículo</option>
+                    <option value="3">Préstamo Vivienda</option>
+                </select>
+
+                <label>Monto:</label>
+                <input type="number" @bind="nuevoPrestamo.Monto" class="form-control" />
+
+                <label>Tasa:</label>
+                <input type="number" @bind="nuevoPrestamo.Tasa" class="form-control" disabled />
+
+                <button class="btn btn-success" @onclick="CrearPrestamo">Crear Préstamo</button>
+            }
+        </div>
+    </div>
+</div> *@
+
+@code {
+    // Clientes cliente = new Clientes();
+    // private List<Prestamo> prestamos = new List<Prestamo>();
+    // private Prestamo nuevoPrestamo = new Prestamo();
+
+    // private async Task BuscarCliente()
+    // {
+    //     // Implementar la búsqueda de cliente desde la base de datos (ADO.NET)
+    //     // Supongamos que lo obtenemos desde el servidor
+    //     // Aquí se cargaría el cliente y los préstamos asociados
+    //     cliente = await Http.GetFromJsonAsync<Clientes>($"api/clientes/{cliente.Identificacion}");
+    //     prestamos = await Http.GetFromJsonAsync<List<Prestamo>>($"api/prestamos/{cliente.Id}");
+    // }
+
+    // private void CrearPrestamo()
+    // {
+    //     if (cliente.Es_empleado == "N")
+    //     {
+    //         switch (nuevoPrestamo.TipoPrestamo)
+    //         {
+    //             case 1: // Préstamo Personal
+    //                 nuevoPrestamo.Tasa = 25;
+    //                 break;
+    //             case 2: // Préstamo Vehículo
+    //                 nuevoPrestamo.Tasa = 16;
+    //                 break;
+    //             case 3: // Préstamo Vivienda
+    //                 nuevoPrestamo.Tasa = 15;
+    //                 break;
+    //         }
+    //     }
+    //     else
+    //     {
+    //         switch (nuevoPrestamo.TipoPrestamo)
+    //         {
+    //             case 1: // Préstamo Personal
+    //                 nuevoPrestamo.Tasa = 15;
+    //                 break;
+    //             case 2: // Préstamo Vehículo
+    //                 nuevoPrestamo.Tasa = 12;
+    //                 break;
+    //             case 3: // Préstamo Vivienda
+    //                 nuevoPrestamo.Tasa = 10;
+    //                 break;
+    //         }
+    //     }
+
+    //     // Guardar el nuevo préstamo en la base de datos
+    //     // Aquí se debe implementar la llamada a un servicio para guardar el préstamo
+    // }
+}

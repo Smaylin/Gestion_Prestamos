@@ -1,0 +1,143 @@
+﻿@page "/clientes"
+@using PruebaTecnica.Components.Models
+@inject ClientesService clienteService
+@inject NavigationManager navigationManager
+
+@code {
+    private Clientes cliente = new Clientes();
+    private List<Clientes> clientes = new List<Clientes>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        clientes = await clienteService.ConsultarClientes();
+    }
+
+    private async Task GuardarCliente()
+    {
+        try
+        {
+            Console.WriteLine("Form is being submitted...");
+            Console.WriteLine($"Nombres: {cliente.Nombres}, Apellidos: {cliente.Apellidos}, Identificacion: {cliente.Identificacion}");
+
+            await clienteService.InsertarActualizarCliente(cliente);
+            navigationManager.NavigateTo("/clientes");
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error al guardar el cliente: {ex.Message}");
+            // Mostrar mensaje de error en la UI si es necesario
+        }
+    }
+
+    private async Task EditarCliente(string identificacion)
+    {
+        cliente = await clienteService.ConsultarClientePorId(identificacion);
+    }
+
+    private async Task HandleValidSubmit()
+    {
+        await GuardarCliente();
+    }
+}
+
+<h3>Gestion de Clientes</h3>
+<EditForm Model="@cliente" OnValidSubmit="@HandleValidSubmit" FormName="clienteForm">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+    <div class="form-group">
+        <label>Nombres:</label>
+        <InputText @bind-Value="@cliente.Nombres" class="form-control" required />
+    </div>
+
+    <div class="form-group">
+        <label>Apellidos:</label>
+        <InputText @bind-Value="@cliente.Apellidos" class="form-control" required />
+    </div>
+
+    <div class="form-group">
+        <label>Identificación:</label>
+        <InputText @bind-Value="@cliente.Identificacion" class="form-control" required />
+    </div>
+
+    <div class="form-group">
+        <label>Género:</label>
+        <InputSelect @bind-Value="@cliente.Genero" class="form-control" required>
+            <option value="">Seleccione...</option>
+            <option value="M">Masculino</option>
+            <option value="F">Femenino</option>
+        </InputSelect>
+    </div>
+
+    <div class="form-group">
+        <label>Empleado:</label>
+        <InputSelect @bind-Value="@cliente.Es_empleado" class="form-control" required>
+            <option value="">Seleccione...</option>
+            <option value="S">Sí</option>
+            <option value="N">No</option>
+        </InputSelect>
+    </div>
+
+    <div class="form-group">
+        <label>Teléfono:</label>
+        <InputText @bind-Value="@cliente.Telefono" class="form-control" required />
+    </div>
+
+    <div class="form-group">
+        <label>Dirección:</label>
+        <InputText @bind-Value="@cliente.Direccion" class="form-control" required />
+    </div>
+
+    <div class="form-group">
+        <label>Estado:</label>
+        <InputSelect @bind-Value="@cliente.Estado" class="form-control" required>
+            <option value="">Seleccione...</option>
+            <option value="A">Activo</option>
+            <option value="I">Inactivo</option>
+        </InputSelect>
+    </div>
+
+    <div class="form-group">
+        <label>Perfil Empleado:</label>
+        <InputNumber @bind-Value="@cliente.PerfilEmpleado" class="form-control" />
+    </div>
+
+    <div class="form-group">
+        <label>Oficial:</label>
+        <InputNumber @bind-Value="@cliente.Oficial" class="form-control" />
+    </div>
+
+    <button type="submit" class="btn btn-primary">Guardar Cliente</button>
+</EditForm>
+
+<!-- Listado de Clientes -->
+@if (clientes != null && clientes.Count > 0)
+{
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Nombres</th>
+                <th>Apellidos</th>
+                <th>Identificación</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var c in clientes)
+            {
+                <tr>
+                    <td>@c.Nombres</td>
+                    <td>@c.Apellidos</td>
+                    <td>@c.Identificacion</td>
+                    <td>
+                        <button @onclick="() => EditarCliente(c.Identificacion)" class="btn btn-warning">Editar</button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p>No hay clientes registrados.</p>
+}
